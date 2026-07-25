@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.pra_frentex</groupId>
-    <artifactId>pra-frentex-login</artifactId>
+    <artifactId>banking-login</artifactId>
     <version>1.0.0</version>
     <name>Pra-frentex Banking Login</name>
 
