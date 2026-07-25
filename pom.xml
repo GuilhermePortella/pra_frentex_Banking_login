@@ -45,7 +45,7 @@
         <repository>
             <id>github</id>
             <name>GitHub GuilhermePortella Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/guilhermeportella/Pra-frentex_Banking-login</url>
+            <url>https://maven.pkg.github.com/guilhermeportella/pra_frentex_Banking_login</url>
         </repository>
     </distributionManagement>
 </project>
