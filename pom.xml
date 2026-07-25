@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.pra_frentex</groupId>
-    <artifactId>pra-frentex_login</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>pra-frentex-login</artifactId>
+    <version>1.0.0</version>
     <name>Pra-frentex Banking Login</name>
 
     <properties>
@@ -45,7 +45,7 @@
         <repository>
             <id>github</id>
             <name>GitHub GuilhermePortella Apache Maven Packages</name>
-            <url>https://github.com/GuilhermePortella/pra_frentex_Banking_login</url>
+            <url>https://maven.pkg.github.com/guilhermeportella/Pra-frentex_Banking-login</url>
         </repository>
     </distributionManagement>
 </project>
