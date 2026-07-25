@@ -29,7 +29,7 @@ jobs:
         server-password: GITHUB_TOKEN
         settings-path: ${{ github.workspace }} # location for the settings.xml file
 
-    - name: Validate package version
+    - name: Set package version from release tag
       run: |
         RELEASE_TAG="${{ github.event.release.tag_name }}"
 
@@ -38,18 +38,11 @@ jobs:
           exit 1
         fi
 
-        POM_VERSION="$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
         TAG_VERSION="${RELEASE_TAG#v}"
+        mvn -B versions:set -DnewVersion="$TAG_VERSION" -DgenerateBackupPoms=false
 
-        if [[ "$POM_VERSION" == *-SNAPSHOT ]]; then
-          echo "The pom.xml version must be a release version, not SNAPSHOT. Current version: $POM_VERSION"
-          exit 1
-        fi
-
-        if [[ "$POM_VERSION" != "$TAG_VERSION" ]]; then
-          echo "The tag version ($TAG_VERSION) must match the pom.xml version ($POM_VERSION)."
-          exit 1
-        fi
+        POM_VERSION="$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
+        echo "Publishing Maven package version $POM_VERSION from release tag $RELEASE_TAG."
 
     - name: Build and publish to GitHub Packages Apache Maven
       run: mvn -B deploy -s $GITHUB_WORKSPACE/settings.xml
