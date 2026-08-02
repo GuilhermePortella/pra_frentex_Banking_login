@@ -1,4 +1,7 @@
 package org.pra_frentex.auth.domain;
 
-public class UserStatus {
+public enum UserStatus {
+    PENDING_VERIFICATION,
+    ACTIVE,
+    BLOCKED
 }
