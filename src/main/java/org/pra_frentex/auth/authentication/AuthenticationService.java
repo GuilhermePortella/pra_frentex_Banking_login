@@ -2,6 +2,7 @@ package org.pra_frentex.auth.authentication;
 
 import java.util.Objects;
 
+import org.pra_frentex.auth.domain.User;
 import org.pra_frentex.auth.ports.PasswordHasher;
 import org.pra_frentex.auth.ports.UserRepository;
 
@@ -20,7 +21,7 @@ public final class AuthenticationService {
 
     public AuthenticationResult authenticate(LoginCommand command) {
 
-        var user = userRepository
+        User user = userRepository
                 .findByEmail(command.email())
                 .orElse(null);
 
