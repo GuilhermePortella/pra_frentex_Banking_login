@@ -6,7 +6,7 @@
 
     <groupId>org.pra_frentex</groupId>
     <artifactId>banking-login</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <name>Pra-frentex Banking Login</name>
 
     <properties>
