@@ -51,9 +51,14 @@ class LoginCommandTest {
 
     @Test
     void rejectsExcessivelyLongCredentials() {
-        String oversizedEmail = "a".repeat(242) + "@example.com";
+        String maximumLengthEmail = "a".repeat(242) + "@example.com";
+        String oversizedEmail = "a".repeat(243) + "@example.com";
         String oversizedPassword = "a".repeat(1_025);
 
+        assertEquals(
+                maximumLengthEmail,
+                new LoginCommand(maximumLengthEmail, "secret").email()
+        );
         assertThrows(
                 IllegalArgumentException.class,
                 () -> new LoginCommand(oversizedEmail, "secret")
