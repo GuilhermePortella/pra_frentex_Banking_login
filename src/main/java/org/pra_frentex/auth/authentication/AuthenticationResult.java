@@ -10,6 +10,8 @@ public sealed interface AuthenticationResult {
     record InvalidCredentials()
             implements AuthenticationResult {}
 
+    /** @deprecated Authentication failures now use InvalidCredentials to avoid account disclosure. */
+    @Deprecated
     record AccountNotActive()
             implements AuthenticationResult {}
 }
