@@ -3,6 +3,48 @@
 Biblioteca Java 21 para autenticação e autorização, distribuída como um pacote
 Maven pelo GitHub Packages.
 
+## Segurança do login
+
+Este projeto é uma biblioteca, não um servidor HTTP. `AuthenticationService`
+coordena o login; `UserRepository` e `PasswordHasher` são portas de integração,
+e `Pbkdf2PasswordHasher` é o adaptador de hash disponível.
+
+O login só retorna `Success` com senha válida e usuário `ACTIVE`. Senha
+incorreta, conta inexistente, bloqueada ou pendente retornam `InvalidCredentials`.
+**Mudança de comportamento:** `AccountNotActive` foi depreciado e não é mais
+retornado pelo serviço; consumidores devem adaptar seus fluxos antes da release.
+
+Para contas inexistentes, o serviço verifica um hash fictício criado com o mesmo
+`PasswordHasher`. Isso reduz a diferença de custo entre contas existentes e
+inexistentes; não garante tempo constante, pois consultas ao repositório e hashes
+com parâmetros diferentes ainda podem variar. Reutilize a instância do serviço:
+seu construtor calcula um hash e os adaptadores usados devem suportar o modelo de
+concorrência da aplicação. Buffers temporários são limpos; a senha de
+`LoginCommand` continua sendo uma `String` e não pode ser apagada da memória.
+
+O adaptador PBKDF2 já usa salt aleatório de 16 bytes, SHA-256, 600.000 iterações
+por padrão e comparação com `MessageDigest.isEqual`. O construtor configurável
+permite custos menores, usados nos testes; não copie esses valores para produção.
+
+### Pendências identificadas na análise inicial
+
+- Limitação de tentativas por conta e origem, antes do trabalho de hash, com
+  armazenamento compartilhado e operações atômicas em aplicações distribuídas.
+- MFA, recuperação de senha e códigos de verificação com expiração e uso único.
+  Cadastro e verificação ainda são classes vazias.
+- Autorização efetiva: `Role` e `Permission` ainda são classes vazias.
+- Sessões/tokens, revogação, TLS e respostas HTTP uniformes na aplicação consumidora.
+- Auditoria sem senhas, hashes ou tokens, e atualização de hashes antigos.
+
+Erros de infraestrutura continuam sendo propagados: a aplicação deve tratá-los
+sem expor exceções internas ao cliente. Não registre comandos de login nem
+credenciais. Esta etapa não inclui auditoria de vulnerabilidades das dependências
+nem certifica o projeto para uso bancário em produção.
+
+Referência: [OWASP Authentication Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html).
+
+Execute `mvn verify` para validar os testes de login e de hash.
+
 ## Coordenadas Maven
 
 ```xml
